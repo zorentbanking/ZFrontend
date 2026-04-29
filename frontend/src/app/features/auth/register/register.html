@@ -1,0 +1,43 @@
+<div class="auth-container d-flex align-items-center justify-content-center py-5">
+  <div class="card register-card shadow-lg p-4">
+    <h3 class="fw-bold mb-4">Open New Account</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Full Name</label>
+          <input type="text" class="form-control" formControlName="fullName">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Email Address</label>
+          <input type="email" class="form-control" formControlName="email">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Phone</label>
+          <input type="text" class="form-control" formControlName="phone">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Date of Birth</label>
+          <input type="date" class="form-control" formControlName="dateOfBirth">
+        </div>
+        <div class="col-12">
+          <label class="form-label small fw-bold">Residential Address</label>
+          <textarea class="form-control" formControlName="address" rows="2"></textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Username</label>
+          <input type="text" class="form-control" formControlName="username">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Password</label>
+          <input type="password" class="form-control" formControlName="password">
+          <div *ngIf="registerForm.get('password')?.errors?.['pattern']" class="text-danger tiny-text">
+            Needs Uppercase, Lowercase, Number & Symbol
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-dark w-100 mt-4 py-2 fw-bold" [disabled]="registerForm.invalid">
+        Register Account
+      </button>
+    </form>
+  </div>
+</div>

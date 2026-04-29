@@ -1,0 +1,31 @@
+.net-worth-banner {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.account-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+}
+
+  .account-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+  }
+
+.bg-primary-soft {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.btn-primary {
+  background-color: #1e3c72;
+  border: none;
+}
+
+  .btn-primary:hover {
+    background-color: #152a50;
+  }
+
+h3 {
+  color: #1a2529;
+  letter-spacing: -0.5px;
+}

@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="../frontend/frontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="zorentfrontend/zorentfrontend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
