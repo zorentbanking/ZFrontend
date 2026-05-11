@@ -8,8 +8,8 @@ export enum AccountType {
 export interface Account {
   id: number;
   accountNumber: string;
-  accountType: AccountType;
+  accountType: string;
   balance: number;
   status: string;
-  dateOpened: string;
+  createdAt: string;
 }

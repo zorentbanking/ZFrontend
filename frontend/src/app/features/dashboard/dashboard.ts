@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Account, AccountType } from '../../core/models/account.model';
+import { Router } from '@angular/router';
+import { Account } from '../../core/models/account.model';
+import { AccountService } from '../../core/services/account.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,23 +10,114 @@ import { Account, AccountType } from '../../core/models/account.model';
   standalone: false
 })
 export class DashboardComponent implements OnInit {
-  // Ensure this is initialized as an empty array first
+
   accounts: Account[] = [];
+
   netWorth: number = 0;
 
-  ngOnInit(): void {
-    // Manually fill the data
-    this.accounts = [
-      { id: 1, accountNumber: '1000234567', accountType: AccountType.Checking, balance: 1250.50, status: 'Active', dateOpened: '2026-01-10' },
-      { id: 2, accountNumber: '5000987654', accountType: AccountType.Savings, balance: 45200.75, status: 'Active', dateOpened: '2026-02-15' }
-    ];
+  loading: boolean = false;
 
-    this.calculateNetWorth();
+  errorMessage: string = '';
+
+  isProfileOpen: boolean = false;
+
+  userName: string = 'User';
+
+  userEmail: string = '';
+
+  constructor(
+    private router: Router,
+    private accountService: AccountService
+  ) { }
+
+  ngOnInit(): void {
+
+    this.loadUserData();
+
+    this.loadAccounts();
+  }
+
+  loadUserData(): void {
+
+    const userData = localStorage.getItem('user');
+
+    if (userData) {
+
+      const user = JSON.parse(userData);
+
+      console.log(user);
+
+      // adjust according to backend response
+      this.userName =
+        user.username ||
+        user.userName ||
+        user.name ||
+        'User';
+
+      this.userEmail =
+        user.email ||
+        user.emailAddress ||
+        '';
+    }
+  }
+
+  loadAccounts(): void {
+
+    this.loading = true;
+
+    this.errorMessage = '';
+
+    this.accountService.getMyAccounts().subscribe({
+
+      next: (res: any) => {
+
+        this.loading = false;
+
+        if (!res.success) {
+
+          this.errorMessage =
+            res.message || 'Failed to load accounts';
+
+          return;
+        }
+
+        this.accounts = res.data || [];
+
+        this.calculateNetWorth();
+      },
+
+      error: (err: any) => {
+
+        this.loading = false;
+
+        this.errorMessage =
+          err.error?.message ||
+          'Unable to fetch accounts';
+      }
+    });
   }
 
   calculateNetWorth(): void {
-    if (this.accounts && this.accounts.length > 0) {
-      this.netWorth = this.accounts.reduce((sum, acc) => sum + acc.balance, 0);
-    }
+
+    this.netWorth = this.accounts.reduce(
+      (total, account) => total + account.balance,
+      0
+    );
+  }
+
+  toggleProfile(): void {
+
+    this.isProfileOpen = !this.isProfileOpen;
+  }
+
+  logout(): void {
+
+    localStorage.removeItem('accessToken');
+
+    localStorage.removeItem('refreshToken');
+
+    localStorage.removeItem('user');
+
+    this.router.navigate(['/login']);
   }
 }
